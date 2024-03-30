@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
     props: {
@@ -61,17 +61,16 @@ export default {
             isPressed.value = false;
         };
 
-        const btnStyle = {
+        const btnStyle = computed(() => ({
             width: props.width,
             height: props.height,
-            backgroundColor: props.color,
+            backgroundColor: isHovered.value ? (props.onHoverColor || '#8E9BFF') : props.color,
             borderRadius: props.borderRadius,
-            boxShadow: props.shadow,
+            boxShadow: isPressed.value ? '0px 2px 2px rgba(0, 0, 0, 0.75)' : props.shadow,
             transition: 'background-color 0.3s, transform 0.1s, box-shadow 0.1s',
-
-            ...(isHovered.value && { backgroundColor: props.onHoverColor || '#8E9BFF', cursor: 'pointer' }),
-            ...(isPressed.value && { transform: 'scale(0.95)', boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.75)' })
-        };
+            transform: isPressed.value ? 'scale(0.95)' : 'scale(1)',
+            cursor: isHovered.value ? 'pointer' : 'default'
+        }));
 
         return {
             isHovered,
