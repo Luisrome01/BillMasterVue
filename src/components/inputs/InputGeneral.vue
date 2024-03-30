@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <div class="containerName">
-            <span>{{ name }}</span>
-        </div>
-        <input :type="type" :placeholder="placeholder" :style="style" :value="value" @input="handleInput"
+    <div class="input-container">
+        <label class="input-label">{{ name }}</label> <!-- Utilizamos label en lugar de span -->
+        <input :type="type" :placeholder="placeholder" :style="inputStyle" :value="value" @input="handleInput"
             class="InputGeneral" />
     </div>
 </template>
@@ -13,14 +11,13 @@ export default {
     props: {
         type: String,
         placeholder: String,
-        width: String,
-        height: String,
         value: [String, Number],
         onChange: Function,
         color: String,
         borderRadius: String,
         shadow: String,
         name: String,
+        width: String,
     },
     methods: {
         handleInput(event) {
@@ -29,10 +26,8 @@ export default {
         }
     },
     computed: {
-        style() {
+        inputStyle() {
             return {
-                width: this.width,
-                height: this.height,
                 backgroundColor: this.color,
                 borderRadius: this.borderRadius,
                 boxShadow: this.shadow,
@@ -43,33 +38,36 @@ export default {
 </script>
 
 <style scoped>
-span {
+.input-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-label,
+input.InputGeneral {
+    width: 100%;
+}
+.input-label {
     color: black;
-    margin-left: 6%;
     font-weight: bold;
+    margin-bottom: 6px;
 }
 
-.containerName {
-    width: 90%;
-}
-
-input {
+input.InputGeneral {
     color: black;
     font-weight: bold;
     border: none;
     outline: none;
     padding-left: 10px;
-}
-
-.InputGeneral {
-    width: 300px;
     height: 50px;
     transition: 0.25s;
     background: rgba(174, 187, 253, 0.25);
     border-radius: 10px;
-    border: none;
 }
 
+.input-label:focus,
 .InputGeneral:focus {
     transition: 0.25s;
     background: rgba(174, 187, 253, 0.75);
