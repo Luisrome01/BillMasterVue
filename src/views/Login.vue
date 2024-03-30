@@ -17,7 +17,7 @@
                 <InputGeneral name="Contraseña" type="password" placeholder="Contraseña" width="80%" :value="password"
                     @change="updatePassword" />
 
-                <p v-if="error" style="color: red;">{{ error }}</p>
+                <p v-if="error" id="p-error" style="color: red;">{{ error }}</p>
                 <BtnGeneral text="Ingresar" @click="handleLogin" :img="image" />
             </div>
         </div>
@@ -108,26 +108,15 @@ export default {
     border-radius: 20px;
 }
 
-.LogContainer>* {
-    margin-bottom: 10px;
-}
-
-body {
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .LogContainerTitle {
     width: 80%;
-    display: inline-block;
 }
 
 .LogTitle {
     font-size: 30px;
     font-weight: bold;
     color: #8599ff;
+    margin: 0;
 }
 
 .LogContainerSubTitle {
@@ -138,12 +127,14 @@ body {
     font-size: 16px;
     font-weight: bold;
     color: #808080;
+    margin: 0;
 }
 
 .LogSubTitle {
     font-size: 35px;
     font-weight: bold;
     color: #8599ff;
+    margin: 0;
 }
 
 .LogLink {
@@ -164,5 +155,14 @@ body {
     position: absolute;
     left: 52%;
     bottom: 10%;
+}
+
+.input-margin {
+    margin-bottom: 10px;
+}
+
+#p-error {
+    margin: 0;
+    text-align: center;
 }
 </style>

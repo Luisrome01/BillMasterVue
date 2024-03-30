@@ -1,6 +1,8 @@
 <template>
     <div class="input-container">
-        <label class="input-label">{{ name }}</label> <!-- Utilizamos label en lugar de span -->
+        <div class="containerName">
+            <span>{{ name }}</span>
+        </div>
         <input :type="type" :placeholder="placeholder" :style="inputStyle" :value="value" @input="handleInput"
             class="InputGeneral" />
     </div>
@@ -39,23 +41,26 @@ export default {
 
 <style scoped>
 .input-container {
-    width: 80%;
+    width: 77.5%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
 }
 
-.input-label,
-input.InputGeneral {
+.containerName {
     width: 100%;
 }
-.input-label {
+
+.containerName span {
     color: black;
     font-weight: bold;
     margin-bottom: 6px;
+    margin-left: -7px;
 }
 
 input.InputGeneral {
+    width: 100%;
     color: black;
     font-weight: bold;
     border: none;
@@ -73,3 +78,4 @@ input.InputGeneral {
     background: rgba(174, 187, 253, 0.75);
 }
 </style>
+
