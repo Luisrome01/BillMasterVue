@@ -8,7 +8,6 @@
             <h2 style="color: #A4A4A5;">MENÚ PRINCIPAL</h2>
             <div class="nav-link" @click="setComponenteActivo('Productos')" :style="getStyle('Productos')"
                 @mouseenter="handleMouseEnter('Productos')" @mouseleave="handleMouseLeave('Productos')">
-                <!-- SVG y Texto para Productos aquí -->
                 <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="nav-link-img">
                     <path
@@ -26,7 +25,6 @@
             </div>
             <div class="nav-link" @click="setComponenteActivo('Facturación')" :style="getStyle('Facturación')"
                 @mouseenter="handleMouseEnter('Facturación')" @mouseleave="handleMouseLeave('Facturación')">
-                <!-- SVG y Texto para Productos aquí -->
                 <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg"
                     class="nav-link-img">
                     <path
@@ -143,7 +141,7 @@ export default {
             handleMouseEnter,
             handleMouseLeave,
             getStyle,
-            setComponenteActivo // Aquí solo necesitas una definición del método
+            setComponenteActivo
         };
     }
 };
