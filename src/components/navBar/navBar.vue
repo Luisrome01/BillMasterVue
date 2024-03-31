@@ -89,13 +89,24 @@
                 </h3>
             </div>
         </div>
+        <div class="nav-last-link">
+            <router-link to="/" style="text-decoration: none">
+                <BtnGeneral text="Logout" color="#ff6060" :onHoverColor="'#c54444'" class="NavBarLogout"
+                    :img="logoutLogo" />
+            </router-link>
+        </div>
     </nav>
 </template>
 
 <script>
 import { reactive } from 'vue';
+import BtnGeneral from '../buttons/BtnGeneral.vue';
+import logoutLogo from '../../assets/tabler_logout.svg';
 
 export default {
+    components: {
+        BtnGeneral
+    },
     props: ['componenteActivo'],
     setup(props, { emit }) {
         const baseLogoColor = "#A4A4A5";
@@ -117,7 +128,6 @@ export default {
         }
 
         function setComponenteActivo(componente) {
-            console.log('Componente activo cambiado a:', componente);
             emit('update:componenteActivo', componente);
         }
 
@@ -141,12 +151,12 @@ export default {
             handleMouseEnter,
             handleMouseLeave,
             getStyle,
-            setComponenteActivo
+            setComponenteActivo,
+            logoutLogo: logoutLogo
         };
     }
 };
 </script>
-
 
 <style scoped>
 @font-face {
