@@ -9,37 +9,17 @@
             </div>
             <div className="MainContentContainer">
                 <div className="MainContentTop">
-                    <h1 className="MainTitle">{componenteActivo}</h1>
+                    <h1 className="MainTitle">Vista</h1>
 
                     <div className="MainUserDiv">
                         <img></img>
                         <p>
-                            Bienvenido {getUser}
+                            Bienvenido Usuario
                         </p>
                     </div>
                 </div>
                 <div className="FactContentBottom">
-                    {componenteActivo === "Productos" && (
-                        <Productos
-                            setListaProductos={setListProductos}
-                            listaProductos={listProductos}
-                        />
-                    )}
-                    {componenteActivo === "Facturacion" && (
-                        <Facturacion
-                            listaProductosInterna={listProductos}
-                            setListaProductosExterna={setListProductos}
-                            continuarVista={cambiarMetodoPago}
-                            ClienteExterno={cliente}
-                            setClienteExterno={setCliente}
-                        />
-                    )}
-                    {componenteActivo === "Metodos de Pago" && (
-                        <MetodosPago totalCosto={totalFactura.toFixed(2)} />
-                    )}
-                    {componenteActivo === "Cierre de Caja" && (
-                        <CierreCaja responsable={getUser} />
-                    )}
+
                 </div>
             </div>
         </div>
