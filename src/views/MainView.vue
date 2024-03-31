@@ -1,25 +1,23 @@
 <template>
     <div>
-        <div className="MainContainer">
-            <div className="MainNavContainer">
-                <NavBar
-                    componenteActivo={componenteActivo}
-                    setComponenteActivo={setComponenteActivo}
-                />
+        <div class="MainContainer">
+            <div class="MainNavContainer">
+                <NavBar :componenteActivo="componenteActivo" @update:componenteActivo="actualizarComponenteActivo" />
             </div>
-            <div className="MainContentContainer">
-                <div className="MainContentTop">
-                    <h1 className="MainTitle">Vista</h1>
+            <div class="MainContentContainer">
+                <div class="MainContentTop">
+                    <h1 class="MainTitle">{{ componenteActivo }}</h1>
 
-                    <div className="MainUserDiv">
+                    <div class="MainUserDiv">
                         <img></img>
                         <p>
                             Bienvenido Usuario
                         </p>
                     </div>
                 </div>
-                <div className="FactContentBottom">
-
+                <div class="FactContentBottom">
+                    <!-- Utiliza un componente dinámico que cambie según el componente activo -->
+                    <component :is="componenteActivoComponente"></component>
                 </div>
             </div>
         </div>
@@ -28,13 +26,50 @@
 
 <script>
 import NavBar from '../components/navBar/navBar.vue';
+// Importa los componentes de las diferentes vistas
+import Facturacion from "../components/navBar/views/Facturacion.vue";
+import Productos from "../components/navBar/views/Productos.vue";
+import MetodoPago from '../components/navBar/views/MetodoPago.vue';
+import CierreCaja from '../components/navBar/views/CierreCaja.vue';
 
 export default {
     components: {
         NavBar,
+        // Registra los componentes de las diferentes vistas
+        Facturacion,
+        Productos,
+        MetodoPago,
+        CierreCaja
     },
+    data() {
+        return {
+            componenteActivo: '', // Inicializa componenteActivo
+        };
+    },
+    computed: {
+        // Calcula el nombre del componente activo basado en el valor de componenteActivo
+        componenteActivoComponente() {
+            // Utiliza un mapeo para asociar el nombre del componente activo con su componente correspondiente
+            const componentes = {
+                'Productos': Productos,
+                'Facturación': Facturacion,
+                'Métodos de Pago': MetodoPago,
+                'Cierre de Caja': CierreCaja
+            };
+            // Retorna el componente correspondiente al componente activo actual
+            return componentes[this.componenteActivo];
+        }
+    },
+    methods: {
+        // Método para actualizar componenteActivo
+        actualizarComponenteActivo(componente) {
+            this.componenteActivo = componente;
+        }
+    }
 };
 </script>
+
+
 
 <style>
 body {

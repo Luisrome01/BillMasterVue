@@ -95,20 +95,18 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { reactive } from 'vue';
 
 export default {
-    props: ['componenteActivo', 'setComponenteActivo'],
-    setup(props) {
+    props: ['componenteActivo'],
+    setup(props, { emit }) {
         const baseLogoColor = "#A4A4A5";
         const activeLogoColor = "#000000";
-        const logo = import('../../assets/BillMasterLogo.svg'); // Asegúrate de que webpack pueda manejar esto, o usa un import estático en la parte superior.
 
         const componenteHover = reactive({
             Productos: false,
             Facturacion: false,
-            "Metodos de Pago": false,
+            "Métodos de Pago": false,
             "Cierre de Caja": false,
         });
 
@@ -118,6 +116,11 @@ export default {
 
         function handleMouseLeave(componente) {
             componenteHover[componente] = false;
+        }
+
+        function setComponenteActivo(componente) {
+            console.log('Componente activo cambiado a:', componente);
+            emit('update:componenteActivo', componente);
         }
 
         function getStyle(componente) {
@@ -137,14 +140,15 @@ export default {
         return {
             baseLogoColor,
             activeLogoColor,
-            logo,
             handleMouseEnter,
             handleMouseLeave,
             getStyle,
+            setComponenteActivo // Aquí solo necesitas una definición del método
         };
-    },
+    }
 };
 </script>
+
 
 <style scoped>
 * {
