@@ -140,7 +140,7 @@ html {
 .MainUserDiv {
     flex-basis: 20%;
     display: flex;
-    justify-items: center;
+    justify-content: space-between;
     align-items: center;
     height: 45px;
     background-color: #aebbfd;
@@ -149,15 +149,11 @@ html {
 }
 
 .MainUserDiv img {
-    width: 30px;
-    height: 30px;
-    margin-left: 10px;
+    margin: 0 10px;
 }
 
 .MainUserDiv p {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0;
-    margin-left: 22px;
+    flex-grow: 1;
+    text-align: center;
 }
 </style>

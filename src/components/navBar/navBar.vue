@@ -149,11 +149,16 @@ export default {
 
 
 <style scoped>
+@font-face {
+    font-family: "SF Pro Display Bold";
+    src: url("./assets/fonts/sf-pro-display-bold.OTF") format("opentype");
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: "SF Pro Display Bold", sans-serif;
 }
 
 .NavNavbar {
