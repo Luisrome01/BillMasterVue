@@ -7,9 +7,8 @@
             <div class="MainContentContainer">
                 <div class="MainContentTop">
                     <h1 class="MainTitle">{{ componenteActivo }}</h1>
-
                     <div class="MainUserDiv">
-                        <img></img>
+                        <img :src="logo"></img>
                         <p>
                             Bienvenido Usuario
                         </p>
@@ -29,6 +28,7 @@ import Facturacion from "../components/navBar/views/Facturacion.vue";
 import Productos from "../components/navBar/views/Productos.vue";
 import MetodoPago from '../components/navBar/views/MetodoPago.vue';
 import CierreCaja from '../components/navBar/views/CierreCaja.vue';
+import logo from "../assets/user-round.svg";
 
 export default {
     components: {
@@ -41,6 +41,7 @@ export default {
     data() {
         return {
             componenteActivo: 'Productos',
+            logo: logo
         };
     },
     computed: {
@@ -138,13 +139,25 @@ html {
 
 .MainUserDiv {
     flex-basis: 20%;
-    display: grid;
-    grid-template-columns: 1fr 5fr;
+    display: flex;
     justify-items: center;
     align-items: center;
     height: 45px;
     background-color: #aebbfd;
     border-radius: 10px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 1);
+}
+
+.MainUserDiv img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.MainUserDiv p {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    margin-left: 22px;
 }
 </style>
