@@ -89,7 +89,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  font-weight: bold; /* Mover aquí la declaración font-weight */
+  font-weight: bold; 
 }
 
 .card .img-card img {
