@@ -1,12 +1,141 @@
 <template>
     <div>
-        <h1>Main</h1>
+        <div className="MainContainer">
+            <div className="MainNavContainer">
+                <NavBar
+                    componenteActivo={componenteActivo}
+                    setComponenteActivo={setComponenteActivo}
+                />
+            </div>
+            <div className="MainContentContainer">
+                <div className="MainContentTop">
+                    <h1 className="MainTitle">{componenteActivo}</h1>
+
+                    <div className="MainUserDiv">
+                        <img></img>
+                        <p>
+                            Bienvenido {getUser}
+                        </p>
+                    </div>
+                </div>
+                <div className="FactContentBottom">
+                    {componenteActivo === "Productos" && (
+                        <Productos
+                            setListaProductos={setListProductos}
+                            listaProductos={listProductos}
+                        />
+                    )}
+                    {componenteActivo === "Facturacion" && (
+                        <Facturacion
+                            listaProductosInterna={listProductos}
+                            setListaProductosExterna={setListProductos}
+                            continuarVista={cambiarMetodoPago}
+                            ClienteExterno={cliente}
+                            setClienteExterno={setCliente}
+                        />
+                    )}
+                    {componenteActivo === "Metodos de Pago" && (
+                        <MetodosPago totalCosto={totalFactura.toFixed(2)} />
+                    )}
+                    {componenteActivo === "Cierre de Caja" && (
+                        <CierreCaja responsable={getUser} />
+                    )}
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import NavBar from '../components/navBar/navBar.vue';
+
 export default {
-}
+    components: {
+        NavBar,
+    },
+};
 </script>
 
-<style></style>
+<style>
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box;
+    color: black;
+}
+
+html {
+    height: 100%;
+}
+
+.MainContainer {
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100%;
+}
+
+.MainNavContainer {
+    flex-basis: 22.5%;
+    border-right: 2px solid #ebebeb;
+}
+
+.MainContentContainer {
+    flex-basis: 77.5%;
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    height: 100vh;
+    border-radius: 20px;
+    background-color: #f5f5f5;
+}
+
+.MainContentTop {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 25px;
+    flex-basis: 15%;
+    position: relative;
+}
+
+.MainContentTop::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 5px;
+    background-image: linear-gradient(to right, #aebbfd, #ff6060);
+    background-repeat: no-repeat;
+    border-radius: 5px;
+}
+
+.MainContentBottom {
+    flex-basis: 85%;
+    background-color: #ffffff;
+}
+
+.MainTitle {
+    color: black;
+    font-weight: bold;
+    flex-basis: 70%;
+    margin-left: 5%;
+}
+
+.MainUserDiv {
+    flex-basis: 20%;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    justify-items: center;
+    align-items: center;
+    height: 45px;
+    background-color: #aebbfd;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 1);
+}
+</style>
