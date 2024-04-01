@@ -81,5 +81,10 @@
     flex-direction: row;
     align-items: center;
   }
+  input{
+    border: none;
+    outline: none;
+    color: black;
+  }
   </style>
   

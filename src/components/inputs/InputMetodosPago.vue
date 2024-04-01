@@ -24,7 +24,7 @@
     data() {
       return {
         inputs: [
-          { label: "Metodo de Pago:", value: "", placeholder: "Metodo de Pago:", options: [
+          { label: "Metodo de Pago:", value: "Metodo de Pago", placeholder: "Metodo de Pago:", options: [
             { label: "EFECTIVO", value: "EFECTIVO" },
             { label: "TRANSFERENCIA", value: "TRANSFERENCIA" },
             { label: "DIVISAS", value: "DIVISAS" },
@@ -84,15 +84,17 @@
   
   .IDIFSelect {
     margin-left: 10px;
-    color: black;
     width: auto; 
     height: 28px; 
     border: 2px solid black;
-    border-radius: 3px;
-    background-color: #ffffff;
+    border-radius: 10px;
+    background-color: #D9D9D9;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    border: none;
+    outline: none;
+    text-align: center;
+    width: 150px;
+    color: black;
   }
   
   .IDIFTitle {

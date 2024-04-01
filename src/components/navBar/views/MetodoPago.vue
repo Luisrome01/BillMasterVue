@@ -5,18 +5,13 @@
 				<div class="MetodosInput">
 					<div class="MetodoMetododPago">
                         <inputMetodosPago 
-                        :name="'Metodo de pago:'"
-                        color="#D9D9D9"
-                        width="150px"
-                        padding="5px"
-                        borderRadius="10px"
-                        height="20%"
                         :valorMetodoPago="setMetodoPago"
-                        :valorBanco="setBanco"/>
+                        :valorBanco="setBanco"
+						/>
                     </div>
 					<div class="MetodoMonto-BotonAgregar">
 						<div class="MetodoMonto">
-							<InputDiferente name="Monto:" color="#D9D9D9" width="15%" onChange={setMonto} value={monto} />
+							<InputDiferente name="Monto:" color="#D9D9D9" width="15%" onChange={setMonto} value='' />
 						</div>
 						<div class="MetodoBotonAgregar">
 							<BtnGeneral :img="svgAdd" text="Agregar Pago" width="165px" />
