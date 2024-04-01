@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="FacturaDireccion">
-          <InputDiferente name="Direccion:" :value="getValorDireccion" flexBasis="100%" color="#D9D9D9" width="70%"
+          <InputDiferente name="Direccion:" :value="getValorDireccion" flexBasis="100%" color="#D9D9D9" width="75vh"
             placeholder="ej. Avenida Río Caura Torre Humboldt Prados del Este Piso 20 Oficina 20-06"
             :disabled="disabledInput" @change="newDireccion => setDireccion(newDireccion)" />
         </div>
