@@ -35,6 +35,9 @@ export default {
     },
     hideAddToCart(producto) {
       producto.showAddToCart = false;
+    },
+    addToCart(producto) {
+      this.$emit('add-to-cart', producto); 
     }
   }
 };
