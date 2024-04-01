@@ -34,6 +34,11 @@
             "name": "Miguel Marquez",
             "email": "miguelmarquez@gmail.com",
             "pass": "miguelito123"
+        },
+        {
+            "name": "admin",
+            "email": "admin",
+            "pass": "admin"
         }
     ]
 }
