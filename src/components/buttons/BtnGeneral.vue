@@ -36,6 +36,10 @@ export default {
         shadow: {
             type: String,
             default: '1.90278px 3.80556px 0px #000000'
+        },
+        gap: {
+            type: String,
+            default: '10px'
         }
     },
     setup(props) {
@@ -64,6 +68,7 @@ export default {
         const btnStyle = computed(() => ({
             width: props.width,
             height: props.height,
+            gap: props.gap,
             backgroundColor: isHovered.value ? (props.onHoverColor || '#8E9BFF') : props.color,
             borderRadius: props.borderRadius,
             boxShadow: isPressed.value ? '0px 2px 2px rgba(0, 0, 0, 0.75)' : props.shadow,
@@ -93,7 +98,6 @@ export default {
     align-items: center;
     display: flex;
     justify-content: center;
-    gap: 10px;
     color: black;
     font-weight: bold;
 }
