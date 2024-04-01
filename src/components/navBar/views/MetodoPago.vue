@@ -29,7 +29,7 @@
 						width="140px"
 						color="#ff6060"
 						onHoverColor="#c54444"
-						img={marketCartSVG} />
+						:img="marketCartSVG"/>
 					
 				</div>
 			</div>
@@ -38,8 +38,9 @@
   <script>
 import InputDiferente from '../../inputs/InputDiferente.vue';
 import InputMetodosPago from '../../inputs/InputMetodosPago.vue'; 
-import BtnGeneral from '../../buttons/BtnGeneral.vue'; 
-
+import BtnGeneral from '../../buttons/BtnGeneral.vue';
+import marketCartSVG from "../../../assets/marketKart.svg";
+import svgAdd from "../../../assets/svg_add.svg";
 
   export default {
     components: {
@@ -54,9 +55,14 @@ import BtnGeneral from '../../buttons/BtnGeneral.vue';
         console.log('Valor del banco seleccionado:', valor);
         // Aquí puedes realizar cualquier acción necesaria con el valor del banco seleccionado
       }
-    }
+    },
+	setup() {
+		return {
+			marketCartSVG,
+			svgAdd,
+		}
+	}
   };
-
   
   </script>
   
