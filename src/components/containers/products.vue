@@ -5,6 +5,7 @@
         v-for="(producto, codigo) in rows"
         :key="codigo"
         class="card"
+        @click="addToCart(producto)"
         @mouseover="showAddToCart(producto)"
         @mouseleave="hideAddToCart(producto)"
       >
@@ -27,6 +28,10 @@ export default {
     rows: {
       type: Object,
       required: true
+    },
+    addToCart: {
+      type: Function,
+      required: true
     }
   },
   methods: {
@@ -36,9 +41,6 @@ export default {
     hideAddToCart(producto) {
       producto.showAddToCart = false;
     },
-    addToCart(producto) {
-      this.$emit('add-to-cart', producto); 
-    }
   }
 };
 </script>

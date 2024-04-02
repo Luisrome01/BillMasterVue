@@ -48,10 +48,6 @@
       }
     },
     methods: {
-        addToCart(producto) {
-      // Agregar el producto a la lista de productos
-      this.listProductos.push(producto);
-    },
       eliminarProducto(codigo) {
         this.$emit('eliminarProducto', codigo);
       }

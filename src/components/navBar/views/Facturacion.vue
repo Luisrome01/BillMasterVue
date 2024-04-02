@@ -129,14 +129,14 @@
   import svgAdd from "../../../assets/svg_add.svg";
 import svgSearch from "../../../assets/SearchSVG.svg";
   
-  export default {
-    name: "Facturacion",
-    components: {
-      InputDinamico,
-      InputDiferente,
-      BtnGeneral,
-      ProductTable,
-    },
+export default {
+  name: "Facturacion",
+  components: {
+    InputDinamico,
+    InputDiferente,
+    BtnGeneral,
+    ProductTable,
+  },
     props: {
       setListaProductosExterna: Function,
       continuarVista: Function,
@@ -145,7 +145,7 @@ import svgSearch from "../../../assets/SearchSVG.svg";
       ClienteExterno: Object,
     },
     setup(props) {
-      const listProductos = ref(props.listaProductosInterna || []);
+        const listProductos = ref([]);
       const montoTotal = ref("0.00");
       const getCantidad = ref(1);
       const getCodigo = ref("");
@@ -184,8 +184,17 @@ import svgSearch from "../../../assets/SearchSVG.svg";
       };
   
       const addProduct = () => {
-        // Function logic...
+      const nuevoProducto = {
+        codigo: getCodigo.value,
+        cantidad: getCantidad.value,
+        // Otros atributos del producto...
       };
+      listProductos.value.push(nuevoProducto);
+      // Limpiar campos de entrada si es necesario
+      getCodigo.value = '';
+      getCantidad.value = 1;
+      // Otros campos de entrada que necesiten limpiarse...
+    };
   
       const handleOnBlur = () => {
         // Function logic...
