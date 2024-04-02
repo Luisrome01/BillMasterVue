@@ -45,12 +45,12 @@ export default {
 
 <style scoped>
 .containerMain {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 85vh;
-  background-color: #ffff;
-  position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 85vh;
+	background-color: #ffff;
+	position: relative;
 }
 
 .containerCard {
@@ -58,7 +58,7 @@ export default {
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 20px;
-  margin-left: 5%;
+  margin-left: 3%;
   margin-top: 3%;
 }
 

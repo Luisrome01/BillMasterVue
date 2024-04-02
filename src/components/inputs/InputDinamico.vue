@@ -65,11 +65,13 @@
     background: rgba(174, 187, 253, 0.25);
     border-radius: 10px;
     border: none;
+    outline: none;
   }
   
   .IDIFInput:focus {
     transition: 0.25s;
     background: rgba(174, 187, 253, 0.75);
+    color: black;
   }
   
   .IDIFMainContainer {

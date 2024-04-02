@@ -69,6 +69,7 @@
     transition: 0.25s;
     background: rgba(174, 187, 253, 0.25);
     margin-left: 10px;
+    color: black;
   }
   
   .InputDTitle {
