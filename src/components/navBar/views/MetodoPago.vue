@@ -20,8 +20,15 @@
 				</div>
 
 				<div class="MetodosPagoTableContainer">
-					
-				</div>
+    <MetodosTable
+        :width="'100%'"
+        :height="'300px'"
+        :color="'#ffffff'"
+        :data="datosMetodosPago"
+        @eliminarPago="eliminarPago"
+    />
+</div>
+
 
 				<div class="MetodosCheckoutContainer">
 					
@@ -41,10 +48,12 @@ import InputMetodosPago from '../../inputs/InputMetodosPago.vue';
 import BtnGeneral from '../../buttons/BtnGeneral.vue';
 import marketCartSVG from "../../../assets/marketKart.svg";
 import svgAdd from "../../../assets/svg_add.svg";
+import MetodosTable from "../../tables/MetodosTable.vue";
+import trashbinSVG from "../../../assets/trashbin.svg";
 
   export default {
     components: {
-      InputMetodosPago, InputDiferente, BtnGeneral
+      InputMetodosPago, InputDiferente, BtnGeneral, MetodosTable, 
     },
     methods: {
       handleValorMetodoPago(valor) {
@@ -60,6 +69,8 @@ import svgAdd from "../../../assets/svg_add.svg";
 		return {
 			marketCartSVG,
 			svgAdd,
+			trashbinSVG,
+			
 		}
 	}
   };
