@@ -49,12 +49,6 @@ export default {
         CierreCajaTable,
         ModalCierre,
     },
-    props: {
-        responsable: {
-            type: String,
-            required: true,
-        },
-    },
     setup(props) {
         const montoTotal = ref("0.00");
         const listIngresos = ref([]);

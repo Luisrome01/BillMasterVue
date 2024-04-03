@@ -41,15 +41,15 @@ export default {
     },
     props: {
         ingresos: {
-            type: Number,
+            type: String,
             required: true
         },
         egresos: {
-            type: Number,
+            type: String,
             required: true
         },
         total: {
-            type: Number,
+            type: String,
             required: true
         },
         cantidadFacturas: {
