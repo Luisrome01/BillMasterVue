@@ -70,6 +70,17 @@ export default {
 
             this.$router.push("/main");
         },
+        handleEnter(event) {
+            if (event.key === 'Enter') {
+                this.handleLogin();
+            }
+        }
+    },
+    mounted() {
+        document.addEventListener('keypress', this.handleEnter);
+    },
+    beforeDestroy() {
+        document.removeEventListener('keypress', this.handleEnter);
     },
     components: {
         BtnGeneral,
