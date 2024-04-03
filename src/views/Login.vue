@@ -66,6 +66,8 @@ export default {
                 return;
             }
 
+            localStorage.setItem('username', user.name);
+
             this.$router.push("/main");
         },
     },

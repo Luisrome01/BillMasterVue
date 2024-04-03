@@ -62,7 +62,7 @@ export default {
         const data = ref([]);
         const openModal = ref(false);
         const cantidadFacturas = ref(0);
-        const responsableState = ref(props.responsable);
+        const responsableState = ref(localStorage.getItem('username') || '');
         const fecha = ref("");
         const hora = ref("");
 

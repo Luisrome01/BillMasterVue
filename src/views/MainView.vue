@@ -9,13 +9,17 @@
                     <h1 class="MainTitle">{{ componenteActivo }}</h1>
                     <div class="MainUserDiv">
                         <img :src="logo"></img>
-                        <p>
+                        <p v-if="username">
+                            Bienvenido {{ username }}
+                        </p>
+                        <p v-else>
                             Bienvenido Usuario
                         </p>
                     </div>
                 </div>
                 <div class="FactContentBottom">
-                    <component :is="componenteActivoComponente" @updateList="handleUpdateProductList" :productList="productList"></component>
+                    <component :is="componenteActivoComponente" @updateList="handleUpdateProductList"
+                        :productList="productList"></component>
                 </div>
             </div>
         </div>
@@ -42,7 +46,8 @@ export default {
         return {
             componenteActivo: 'Productos',
             logo: logo,
-            productList: []
+            productList: [],
+            username: null
         };
     },
     computed: {
@@ -65,6 +70,10 @@ export default {
         }
     },
     mounted() {
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            this.username = storedUsername;
+        }
         this.actualizarComponenteActivo('Productos');
     }
 };
@@ -159,5 +168,6 @@ html {
 .MainUserDiv p {
     flex-grow: 1;
     text-align: center;
+    margin-right: 10px;
 }
 </style>
