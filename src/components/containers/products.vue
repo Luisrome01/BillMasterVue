@@ -62,6 +62,7 @@ export default {
 							descripcion: product.name,
 							cantidad: 1,
 							precio: product.price,
+							iva: product.IVA,
 							total: product.total,
 						};
 						let productExists = false;

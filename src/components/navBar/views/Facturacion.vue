@@ -166,13 +166,14 @@ export default {
 							descripcion: product.name,
 							cantidad: parseInt(this.cantidad.inputText),
 							precio: product.price,
+							iva: product.IVA,
 							total: parseFloat(this.cantidad.inputText) * parseFloat(product.total),
 						};
 						let productExists = false;
 						this.listProductos.forEach((product) => {
 							if (product.codigo === newProduct.codigo) {
 								product.cantidad += newProduct.cantidad;
-								product.total = product.cantidad * product.total;
+								product.total = product.cantidad * (product.precio + product.iva);
 								productExists = true;
 								return;
 							}
