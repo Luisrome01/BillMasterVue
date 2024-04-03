@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="FactContentBottom">
-                    <component :is="componenteActivoComponente"></component>
+                    <component :is="componenteActivoComponente" @updateList="handleUpdateProductList" :productList="productList"></component>
                 </div>
             </div>
         </div>
@@ -41,7 +41,8 @@ export default {
     data() {
         return {
             componenteActivo: 'Productos',
-            logo: logo
+            logo: logo,
+            productList: []
         };
     },
     computed: {
@@ -58,6 +59,9 @@ export default {
     methods: {
         actualizarComponenteActivo(componente) {
             this.componenteActivo = componente;
+        },
+        handleUpdateProductList(newList) {
+            this.productList = newList;
         }
     },
     mounted() {

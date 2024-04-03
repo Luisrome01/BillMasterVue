@@ -117,7 +117,7 @@ import InputDinamico from "../../../components/inputs/InputDinamico.vue";
 import InputDiferente from "../../../components/inputs/InputDiferente.vue";
 import BtnGeneral from "../../../components/buttons/BtnGeneral.vue";
 import ProductTable from "../../tables/ProductTable.vue";
-import { ref, watchEffect } from "vue";
+import { ref, watch } from "vue";
 import svgAdd from "../../../assets/svg_add.svg";
 import svgSearch from "../../../assets/SearchSVG.svg";
 import cartSVG from "../../../assets/marketKart.svg";
@@ -131,6 +131,9 @@ export default {
 		ProductTable,
 	},
 	props: {
+		/* working */
+		productList: Array,
+		/* testing */
 		setListaProductosExterna: Function,
 		continuarVista: Function,
 		listaProductosInterna: Array,
@@ -144,7 +147,6 @@ export default {
 
 	methods: {
 		addProduct() {
-			console.log(this.listProductos);
 			fetch("/src/json/productos.json")
 				.then((response) => {
 					if (!response.ok) {
@@ -180,6 +182,8 @@ export default {
 						/* this.setListaProductosExterna(updatedProductos); */
 						this.codigo.inputText = "";
 						this.cantidad.inputText = "";
+						this.montoTotal = this.listProductos.reduce((acc, product) => acc + product.total, 0).toFixed(2);
+						this.$emit("updateList", this.listProductos);
 					}
 				});
 		},
@@ -210,11 +214,12 @@ export default {
 			Fijate como en mounted() arriba se hace referencia a los inputs, y luego accedes a sus valores con this.cantidad.inputText y this.codigo.inputText
 			el onChange no hace falta como en react que se usaba para actualizar el estado, en vue se actualiza automaticamente
 			en methods: se definen las funciones que se van a usar en el template en lugar de hacerlas aqui en setup, y se accede a las variables con this.variable,
-			el .value no se usa como en el setup
+			el .value no se usa como en el setup. Tambien, puedes renombrar sin ningun problema las variables que se pasan por props, como en el caso de props.productList
+			que use para definir listProductos desde mainView
 		*/
 
-		const listProductos = ref(props.listaProductosInterna || []);
-		const montoTotal = ref("0.00");
+		const listProductos = ref(props.productList || []);
+		const montoTotal = ref(props.productList.reduce((acc, product) => acc + product.total, 0) || "0.00");
 		const getIdentificacion = ref("Cedula");
 		const getValorIdentificacion = ref(
 			props.ClienteExterno ? props.ClienteExterno.ci || props.ClienteExterno.pasaporte || props.ClienteExterno.idExtranjera : ""
