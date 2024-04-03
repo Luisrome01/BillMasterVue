@@ -99,7 +99,7 @@
 		</div>
 
 		<div class="FacturaTableContainer">
-			<ProductTable width="90%" height="85%" :rows="listProductos" @eliminarProducto="removeProduct" />
+			<ProductTable width="90%" height="85%" :rows="listProductos" @eliminarProducto="eliminarProducto" />
 		</div>
 
 		<div class="FacturaCheckoutContainer">
@@ -166,7 +166,17 @@ export default {
 							precio: product.price,
 							total: parseFloat(this.cantidad.inputText) * parseFloat(product.total),
 						};
-						this.addProductToList(newProduct);
+						let productExists = false;
+						this.listProductos.forEach((product) => {
+							if (product.codigo === newProduct.codigo) {
+								product.cantidad += newProduct.cantidad;
+								product.total = product.cantidad * product.total;
+								productExists = true;
+								return;
+							}
+						});
+						if (!productExists) this.listProductos.push(newProduct);
+						/* this.addProductToList(newProduct); */
 						/* this.setListaProductosExterna(updatedProductos); */
 						this.codigo.inputText = "";
 						this.cantidad.inputText = "";
@@ -185,12 +195,24 @@ export default {
 		continueToPayment() {
 			// Function logic...
 		},
-		eliminarProducto() {
-			// Function logic...
+		eliminarProducto(codigo) {
+			this.listProductos.forEach((product, index) => {
+				if (product.codigo === codigo) {
+					this.listProductos.splice(index, 1);
+					return;
+				}
+			});
 		},
 	},
 
 	setup(props) {
+		/* NOTAS PARA MIGUEL
+			Fijate como en mounted() arriba se hace referencia a los inputs, y luego accedes a sus valores con this.cantidad.inputText y this.codigo.inputText
+			el onChange no hace falta como en react que se usaba para actualizar el estado, en vue se actualiza automaticamente
+			en methods: se definen las funciones que se van a usar en el template en lugar de hacerlas aqui en setup, y se accede a las variables con this.variable,
+			el .value no se usa como en el setup
+		*/
+
 		const listProductos = ref(props.listaProductosInterna || []);
 		const montoTotal = ref("0.00");
 		const getIdentificacion = ref("Cedula");
@@ -208,31 +230,8 @@ export default {
 		const getRif = ref("");
 		const disabledInput = ref(false);
 
-		const addProductToList = (newProduct) => {
-			let productExists = false;
-			listProductos.value.forEach((product) => {
-				if (product.codigo === newProduct.codigo) {
-					product.cantidad += newProduct.cantidad;
-					product.total = product.cantidad * product.total;
-					productExists = true;
-					return;
-				}
-			});
-			if (!productExists) listProductos.value.push(newProduct);
-		};
-		const removeProduct = (codigo) => {
-			listProductos.value.forEach((product, index) => {
-				if (product.codigo === codigo) {
-					listProductos.value.splice(index, 1);
-					return;
-				}
-			});
-		};
-
 		return {
-			removeProduct,
 			listProductos,
-			addProductToList,
 			montoTotal,
 			getIdentificacion,
 			getValorIdentificacion,
