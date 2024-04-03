@@ -206,6 +206,7 @@ export default {
 					return;
 				}
 			});
+			this.montoTotal = this.listProductos.reduce((acc, product) => acc + product.total, 0).toFixed(2);
 		},
 	},
 
@@ -219,7 +220,7 @@ export default {
 		*/
 
 		const listProductos = ref(props.productList || []);
-		const montoTotal = ref(props.productList.reduce((acc, product) => acc + product.total, 0) || "0.00");
+		const montoTotal = ref(props.productList.reduce((acc, product) => acc + product.total, 0).toFixed(2) || "0.00");
 		const getIdentificacion = ref("Cedula");
 		const getValorIdentificacion = ref(
 			props.ClienteExterno ? props.ClienteExterno.ci || props.ClienteExterno.pasaporte || props.ClienteExterno.idExtranjera : ""
