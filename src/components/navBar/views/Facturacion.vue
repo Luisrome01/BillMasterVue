@@ -248,7 +248,7 @@ export default {
     },
   },
 
-  setup(props, { emit }) {
+  setup(props) {
     const listProductos = ref(props.productList || []);
     const montoTotal = ref(
       props.productList
@@ -334,7 +334,7 @@ export default {
           documentoCliente.value = valorDocumento;
         }
 
-        emit("clienteEncontrado", {
+        this.$emit("clienteEncontrado", {
           nombre: nombreCliente.value,
           direccion: direccionCliente.value,
           rif: rifCliente.value,
