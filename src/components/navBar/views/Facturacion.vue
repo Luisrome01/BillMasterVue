@@ -326,7 +326,7 @@ export default {
           documentoCliente.value = valorDocumento;
         } else {
           console.log("Cliente no encontrado. Permitiendo ingreso manual.");
-          this.disabledInput = false;
+          disabledInput.value = false;
           nombreCliente.value = "";
           direccionCliente.value = "";
           rifCliente.value = "";
