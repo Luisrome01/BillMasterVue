@@ -97,7 +97,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	overflow-y: auto;
-	height: 100%;
+	height: 80%;
 	margin-right: 10px;
 }
 
