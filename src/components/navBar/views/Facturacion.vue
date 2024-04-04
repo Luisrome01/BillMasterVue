@@ -180,6 +180,9 @@ export default {
         if (clienteEncontrado) {
           console.log("Datos del cliente encontrado:");
           console.log(clienteEncontrado);
+		  this.getValorNombre = clienteEncontrado.name;
+		  this.getValorDireccion = clienteEncontrado.direccion;
+		  this.getValorRif = clienteEncontrado.rif;
         } else {
           console.log("Cliente no encontrado.");
         }
