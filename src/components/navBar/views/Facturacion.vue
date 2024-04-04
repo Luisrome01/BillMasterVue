@@ -19,7 +19,7 @@
 
 					<div class="FacturaNombre">
 						<InputDiferente
-							:value="getValorNombre"
+							:value="nombreCliente"
 							name="Nombre:"
 							color="#D9D9D9"
 							width="50%"
@@ -32,7 +32,7 @@
 				<div class="FacturaDireccion">
 					<InputDiferente
 						name="Direccion:"
-						:value="getValorDireccion"
+						:value="direccionCliente"
 						flexBasis="100%"
 						color="#D9D9D9"
 						width="70%"
@@ -44,7 +44,7 @@
 				<div class="FacturaRif-BotonCrear">
 					<div class="FacturaRif">
 						<InputDiferente
-							:value="getValorRif"
+							:value="rifCliente"
 							name="Rif:"
 							color="#D9D9D9"
 							width="80%"
@@ -147,50 +147,6 @@ export default {
 
 	methods: {
 
-		async handleOnBlur(valorDocumento, tipoDocumento) {
-      try {
-        const response = await fetch("/src/json/clientes.json");
-        const data = await response.json();
-        console.log(data);
-
-        console.log("Tipo de documento:", tipoDocumento);
-
-        let clienteEncontrado;
-        switch (tipoDocumento) {
-          case "Cedula":
-            clienteEncontrado = data.data.find(
-              (cliente) => cliente.ci === valorDocumento
-            );
-            break;
-          case "Pasaporte":
-            clienteEncontrado = data.data.find(
-              (cliente) => cliente.pasaporte === valorDocumento
-            );
-            break;
-          case "ID Extranjero":
-            clienteEncontrado = data.data.find(
-              (cliente) => cliente.idExtranjera === valorDocumento
-            );
-            break;
-          default:
-            console.error("Tipo de documento no válido:", tipoDocumento);
-            return;
-        }
-
-        if (clienteEncontrado) {
-          console.log("Datos del cliente encontrado:");
-          console.log(clienteEncontrado);
-		  this.getValorNombre = clienteEncontrado.name;
-		  this.getValorDireccion = clienteEncontrado.direccion;
-		  this.getValorRif = clienteEncontrado.rif;
-        } else {
-          console.log("Cliente no encontrado.");
-        }
-      } catch (error) {
-        console.error("Error al cargar los clientes:", error);
-      }
-    },
-
 
 		addProduct() {
 			fetch("/src/json/productos.json")
@@ -255,52 +211,109 @@ export default {
 		},
 	},
 
-	setup(props) {
-		/* NOTAS PARA MIGUEL
-			Fijate como en mounted() arriba se hace referencia a los inputs, y luego accedes a sus valores con this.cantidad.inputText y this.codigo.inputText
-			el onChange no hace falta como en react que se usaba para actualizar el estado, en vue se actualiza automaticamente
-			en methods: se definen las funciones que se van a usar en el template en lugar de hacerlas aqui en setup, y se accede a las variables con this.variable,
-			el .value no se usa como en el setup. Tambien, puedes renombrar sin ningun problema las variables que se pasan por props, como en el caso de props.productList
-			que use para definir listProductos desde mainView
-		*/
+	setup(props, { emit }) {
+    const listProductos = ref(props.productList || []);
+    const montoTotal = ref(props.productList.reduce((acc, product) => acc + product.total, 0).toFixed(2) || "0.00");
+    const getIdentificacion = ref("Cedula");
+    const getValorIdentificacion = ref(
+        props.ClienteExterno ? props.ClienteExterno.ci || props.ClienteExterno.pasaporte || props.ClienteExterno.idExtranjera : ""
+    );
+    const getClientes = ref([]);
+    const getValorNombre = ref(props.ClienteExterno ? props.ClienteExterno.name : "");
+    const getValorDireccion = ref(props.ClienteExterno ? props.ClienteExterno.direccion : "");
+    const getValorRif = ref(props.ClienteExterno ? props.ClienteExterno.rif : "");
+    const getValorCodigo = ref("");
+    const getValorCantidad = ref("");
+    const getName = ref("");
+    const getDireccion = ref("");
+    const getRif = ref("");
+    const disabledInput = ref(false);
 
-		const listProductos = ref(props.productList || []);
-		const montoTotal = ref(props.productList.reduce((acc, product) => acc + product.total, 0).toFixed(2) || "0.00");
-		const getIdentificacion = ref("Cedula");
-		const getValorIdentificacion = ref(
-			props.ClienteExterno ? props.ClienteExterno.ci || props.ClienteExterno.pasaporte || props.ClienteExterno.idExtranjera : ""
-		);
-		const getClientes = ref([]);
-		const getValorNombre = ref(props.ClienteExterno ? props.ClienteExterno.name : "");
-		const getValorDireccion = ref(props.ClienteExterno ? props.ClienteExterno.direccion : "");
-		const getValorRif = ref(props.ClienteExterno ? props.ClienteExterno.rif : "");
-		const getValorCodigo = ref("");
-		const getValorCantidad = ref("");
-		const getName = ref("");
-		const getDireccion = ref("");
-		const getRif = ref("");
-		const disabledInput = ref(false);
+    const nombreCliente = ref("");
+    const direccionCliente = ref("");
+    const rifCliente = ref("");
 
-		return {
-			listProductos,
-			montoTotal,
-			getIdentificacion,
-			getValorIdentificacion,
-			getClientes,
-			getValorNombre,
-			getValorDireccion,
-			getValorRif,
-			getValorCodigo,
-			getValorCantidad,
-			getName,
-			getDireccion,
-			getRif,
-			disabledInput,
-			svgAdd,
-			cartSVG,
-			svgSearch,
-		};
-	},
+    const handleOnBlur = async (valorDocumento, tipoDocumento) => {
+        try {
+            const response = await fetch("/src/json/clientes.json");
+            const data = await response.json();
+            console.log(data);
+
+            console.log("Tipo de documento:", tipoDocumento);
+
+            let clienteEncontrado;
+            switch (tipoDocumento) {
+                case "Cedula":
+                    clienteEncontrado = data.data.find(
+                        (cliente) => cliente.ci === valorDocumento
+                    );
+                    break;
+                case "Pasaporte":
+                    clienteEncontrado = data.data.find(
+                        (cliente) => cliente.pasaporte === valorDocumento
+                    );
+                    break;
+                case "ID Extranjero":
+                    clienteEncontrado = data.data.find(
+                        (cliente) => cliente.idExtranjera === valorDocumento
+                    );
+                    break;
+                default:
+                    console.error("Tipo de documento no válido:", tipoDocumento);
+                    return;
+            }
+
+            if (clienteEncontrado) {
+                console.log("Datos del cliente encontrado:");
+                console.log(clienteEncontrado);
+                nombreCliente.value = clienteEncontrado.name;
+                direccionCliente.value = clienteEncontrado.direccion;
+                rifCliente.value = clienteEncontrado.rif;
+            } else {
+                console.log("Cliente no encontrado. Permitiendo ingreso manual.");
+                // Permitir al usuario llenar los campos manualmente
+                this.disabledInput = false;
+                // Limpiar los valores actuales en caso de que haya habido una búsqueda previa
+                nombreCliente.value = "";
+                direccionCliente.value = "";
+                rifCliente.value = "";
+            }
+
+            // Emitir los valores al componente padre
+            emit('clienteEncontrado', {
+                nombre: nombreCliente.value,
+                direccion: direccionCliente.value,
+                rif: rifCliente.value
+            });
+        } catch (error) {
+            console.error("Error al cargar los clientes:", error);
+        }
+    };
+
+    return {
+        listProductos,
+        montoTotal,
+        getIdentificacion,
+        getValorIdentificacion,
+        getClientes,
+        getValorNombre,
+        getValorDireccion,
+        getValorRif,
+        getValorCodigo,
+        getValorCantidad,
+        getName,
+        getDireccion,
+        getRif,
+        disabledInput,
+        nombreCliente,
+        direccionCliente,
+        rifCliente,
+        handleOnBlur,
+        svgAdd,
+        cartSVG,
+        svgSearch,
+    };
+},
 };
 </script>
 
