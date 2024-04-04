@@ -19,7 +19,7 @@
                 </div>
                 <div class="FactContentBottom">
                     <component :is="componenteActivoComponente" @updateList="handleUpdateProductList"
-                        :productList="productList"></component>
+                        :productList="productList" :montoTotal="monto" @checkout="handleCheckout"></component>
                 </div>
             </div>
         </div>
@@ -47,7 +47,8 @@ export default {
             componenteActivo: 'Productos',
             logo: logo,
             productList: [],
-            username: null
+            username: null,
+            monto: 0,
         };
     },
     computed: {
@@ -67,6 +68,12 @@ export default {
         },
         handleUpdateProductList(newList) {
             this.productList = newList;
+            this.monto = this.productList.reduce((acc, product) => acc + product.total, 0);
+        },
+        handleCheckout() {
+            this.productList = [];
+            this.monto = 0;
+            this.actualizarComponenteActivo('Facturación');
         }
     },
     mounted() {

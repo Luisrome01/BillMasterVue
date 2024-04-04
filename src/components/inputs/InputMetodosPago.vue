@@ -94,7 +94,6 @@ export default {
 
 .IDIFSelect {
 	margin-left: 10px;
-	width: auto;
 	height: 28px;
 	border: 2px solid black;
 	border-radius: 10px;
