@@ -1,84 +1,92 @@
 <template>
-    
-    <div class="MetodosContainer">
-				<h1 class="MetodosHeaderContainer">Agregar metodos de pago</h1>
-				<div class="MetodosInput">
-					<div class="MetodoMetododPago">
-                        <inputMetodosPago 
-                        :valorMetodoPago="setMetodoPago"
-                        :valorBanco="setBanco"
-						/>
-                    </div>
-					<div class="MetodoMonto-BotonAgregar">
-						<div class="MetodoMonto">
-							<InputDiferente name="Monto:" color="#D9D9D9" width="15%" onChange={setMonto} value='' />
-						</div>
-						<div class="MetodoBotonAgregar">
-							<BtnGeneral :img="svgAdd" text="Agregar Pago" width="165px" />
-						</div>
-					</div>
+	<div class="MetodosContainer">
+		<h1 class="MetodosHeaderContainer">Agregar metodos de pago</h1>
+		<div class="MetodosInput">
+			<div class="MetodoMetododPago">
+				<inputMetodosPago @update-metodo-pago="handleUpdateMetodoPago" @update-banco="handleUpdateBanco" />
+			</div>
+			<div class="MetodoMonto-BotonAgregar">
+				<div class="MetodoMonto">
+					<InputDiferente name="Monto:" color="#D9D9D9" width="15%" value="" ref="monto" />
 				</div>
-
-				<div class="MetodosPagoTableContainer">
-    <MetodosTable
-        :width="'100%'"
-        :height="'300px'"
-        :color="'#ffffff'"
-        :data="datosMetodosPago"
-        @eliminarPago="eliminarPago"
-    />
-</div>
-
-
-				<div class="MetodosCheckoutContainer">
-					
-					<BtnGeneral text="Checkout"
-						width="140px"
-						color="#ff6060"
-						onHoverColor="#c54444"
-						:img="marketCartSVG"/>
-					
+				<div class="MetodoBotonAgregar">
+					<BtnGeneral :img="svgAdd" text="Agregar Pago" width="165px" @click="addMetodoPago" />
 				</div>
 			</div>
-  </template>
-  
-  <script>
-import InputDiferente from '../../inputs/InputDiferente.vue';
-import InputMetodosPago from '../../inputs/InputMetodosPago.vue'; 
-import BtnGeneral from '../../buttons/BtnGeneral.vue';
+		</div>
+
+		<div class="MetodosPagoTableContainer">
+			<MetodosTable :width="'100%'" :height="'300px'" :color="'#ffffff'" :data="datosMetodosPago" @eliminarPago="eliminarPago" />
+		</div>
+
+		<div class="MetodosCheckoutContainer">
+			<BtnGeneral text="Checkout" width="140px" color="#ff6060" onHoverColor="#c54444" :img="marketCartSVG" />
+		</div>
+	</div>
+</template>
+<script>
+import InputDiferente from "../../inputs/InputDiferente.vue";
+import InputMetodosPago from "../../inputs/InputMetodosPago.vue";
+import BtnGeneral from "../../buttons/BtnGeneral.vue";
+import MetodosTable from "../../tables/MetodosTable.vue";
+
 import marketCartSVG from "../../../assets/marketKart.svg";
 import svgAdd from "../../../assets/svg_add.svg";
-import MetodosTable from "../../tables/MetodosTable.vue";
-import trashbinSVG from "../../../assets/trashbin.svg";
 
-  export default {
-    components: {
-      InputMetodosPago, InputDiferente, BtnGeneral, MetodosTable, 
-    },
-    methods: {
-      handleValorMetodoPago(valor) {
-        console.log('Valor del método de pago seleccionado:', valor);
-        // Aquí puedes realizar cualquier acción necesaria con el valor del método de pago seleccionado
-      },
-      handleValorBanco(valor) {
-        console.log('Valor del banco seleccionado:', valor);
-        // Aquí puedes realizar cualquier acción necesaria con el valor del banco seleccionado
-      }
-    },
+export default {
+	components: {
+		InputMetodosPago,
+		InputDiferente,
+		BtnGeneral,
+		MetodosTable,
+	},
+	mounted() {
+		this.monto = this.$refs.monto;
+	},
+	methods: {
+		handleUpdateMetodoPago(valor) {
+			this.metodoPago = valor;
+		},
+		handleUpdateBanco(valor) {
+			this.banco = valor;
+		},
+		addMetodoPago() {
+			if (this.metodoPago === "") {
+				alert("Debe seleccionar un metodo de pago");
+				return;
+			}
+			if (this.banco === "") {
+				alert("Debe seleccionar un banco");
+				return;
+			}
+			if (this.monto.inputText === "") {
+				alert("Debe ingresar un monto");
+				return;
+			}
+			this.datosMetodosPago.push({ metodosPago: this.metodoPago, banco: this.banco, monto: this.monto.inputText });
+		},
+		eliminarPago(index) {
+			this.datosMetodosPago.splice(index, 1);
+		},
+	},
+	data() {
+		return {
+			metodoPago: "",
+			banco: "",
+			datosMetodosPago: [],
+		};
+	},
 	setup() {
 		return {
 			marketCartSVG,
 			svgAdd,
-			trashbinSVG,
-			
-		}
-	}
-  };
-  
-  </script>
-  
-  <style scoped>
-  .MetodosContainer {
+		};
+	},
+};
+</script>
+
+<style scoped>
+.MetodosContainer {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -98,7 +106,6 @@ import trashbinSVG from "../../../assets/trashbin.svg";
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-   
 }
 
 .MetodoMetododPago {
@@ -134,7 +141,4 @@ import trashbinSVG from "../../../assets/trashbin.svg";
 	margin-left: auto;
 	margin-right: 10%;
 }
-
-
-  </style>
-  
+</style>
