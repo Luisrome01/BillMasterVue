@@ -4,7 +4,9 @@
         <div class="modalContent">
             <div class="title">
                 <h1>Resumen del cierre de caja</h1>
-                <BtnGeneral text="X" gap="0" width="40px" height="40px" color="#FF6060" bgColor="#FF0000" @click="closeModal" />
+                <router-link to="/" style="text-decoration: none">
+				    <BtnGeneral text="X" gap="0" width="40px" height="40px" color="#FF6060" bgColor="#FF0000" />
+			    </router-link>
             </div>
             <div class="body">
                 <div class="bodyContainer">
@@ -68,10 +70,6 @@ export default {
             type: String,
             required: true
         },
-        closeModal: {
-            type: Function,
-            required: true
-        }
     }
 };
 </script>

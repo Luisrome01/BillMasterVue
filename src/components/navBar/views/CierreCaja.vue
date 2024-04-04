@@ -30,7 +30,7 @@
                 @click="handleClickCierreCaja" />
         </div>
 
-        <ModalCierre v-if="openModal" :closeModal="closeModal" :cantidadFacturas="cantidadFacturas"
+        <ModalCierre v-if="openModal" :cantidadFacturas="cantidadFacturas"
             :ingresos="listIngresos" :egresos="listEgresos" :total="montoTotal" :responsable="responsableState"
             :fecha="fecha" :hora="hora" />
     </div>
@@ -103,9 +103,6 @@ export default {
             openModal.value = true;
         };
 
-        const closeModal = () => {
-            openModal.value = false;
-        };
 
 
         return {
@@ -120,7 +117,6 @@ export default {
             hora,
             handleClickCierreCaja,
             setOpenModal: openModal,
-            closeModal,
             checkSVG
         };
     },
