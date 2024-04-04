@@ -11,7 +11,7 @@
 				<div v-for="(fila, index) in data" :key="index" class="MetodosTableRow">
 					<p>{{ fila.metodosPago }}</p>
 					<p>{{ fila.banco }}</p>
-					<p>{{ fila.monto }}</p>
+					<p style="justify-self: center;">{{ fila.monto }}</p>
 					<button @click="eliminarPago(index)" class="MetodosTrashButton">
 						<img src="../../assets/trashbin.svg" alt="Eliminar pago" />
 					</button>
@@ -80,18 +80,22 @@ export default {
 	justify-items: center;
 	flex-direction: column;
 	overflow-y: auto;
-	height: 100%;
+	height: 70%;
 	width: 100%;
+ 
 }
 
 .MetodosTableRow {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	padding-left: 15px;
+	padding-left: 25px;
 	padding-right: 25px;
 	align-items: center;
 	justify-items: left;
 	margin-top: 25px;
+  justify-content: right;
+  margin-left: 45px;
+ 
 }
 
 .MetodosTableHeader p {
