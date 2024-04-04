@@ -146,6 +146,52 @@ export default {
 	},
 
 	methods: {
+
+		async handleOnBlur(valorDocumento, tipoDocumento) {
+      try {
+        const response = await fetch("/src/json/clientes.json");
+        const data = await response.json();
+        console.log(data);
+
+        console.log("Tipo de documento:", tipoDocumento);
+
+        let clienteEncontrado;
+        switch (tipoDocumento) {
+          case "Cedula":
+            clienteEncontrado = data.data.find(
+              (cliente) => cliente.ci === valorDocumento
+            );
+            break;
+          case "Pasaporte":
+            clienteEncontrado = data.data.find(
+              (cliente) => cliente.pasaporte === valorDocumento
+            );
+            break;
+          case "ID Extranjero":
+            clienteEncontrado = data.data.find(
+              (cliente) => cliente.idExtranjera === valorDocumento
+            );
+            break;
+          default:
+            console.error("Tipo de documento no válido:", tipoDocumento);
+            return;
+        }
+
+        if (clienteEncontrado) {
+          console.log("Datos del cliente encontrado:");
+          console.log(clienteEncontrado);
+		  this.getValorNombre = clienteEncontrado.name;
+		  this.getValorDireccion = clienteEncontrado.direccion;
+		  this.getValorRif = clienteEncontrado.rif;
+        } else {
+          console.log("Cliente no encontrado.");
+        }
+      } catch (error) {
+        console.error("Error al cargar los clientes:", error);
+      }
+    },
+
+
 		addProduct() {
 			fetch("/src/json/productos.json")
 				.then((response) => {
@@ -189,9 +235,7 @@ export default {
 				});
 		},
 
-		handleOnBlur() {
-			// Function logic...
-		},
+		
 
 		createClient() {
 			// Function logic...
