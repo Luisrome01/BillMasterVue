@@ -1,55 +1,63 @@
 <template>
-    <div :style="style" class="cierreCajaTableContainer">
-        <div class="cierreCajaTableWrapper">
-            <div class="cierreCajaTableHeader">
-                <p>Número de factura</p>
-                <p>Fecha</p>
-                <p>Monto</p>
-                <p>Ingresos</p>
-                <p>Egresos</p>
-            </div>
-            <div class="cierreCajaTableBody">
-                <div v-for="(fila, index) in data" :key="index" class="cierreCajaTableRow">
-                    <p>{{ fila.id }}</p>
-                    <p>{{ fila.date }}</p>
-                    <p>{{ fila.monto }}</p>
-                    <p>{{ fila.ingresos }}</p>
-                    <p>{{ fila.egresos }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div :style="style" class="cierreCajaTableContainer">
+		<div class="cierreCajaTableWrapper">
+			<div class="cierreCajaTableHeader">
+				<p>Número de factura</p>
+				<p>Fecha</p>
+				<p>Monto</p>
+				<p>Ingresos</p>
+				<p>Egresos</p>
+			</div>
+			<div class="cierreCajaTableBody">
+				<div v-for="(fila, index) in data" :key="index" class="cierreCajaTableRow">
+					<p>{{ fila.id }}</p>
+					<p>{{ fila.date }}</p>
+					<p>{{ fila.monto }}</p>
+					<p>{{ calculateIngresos(fila.metodosPago) }}</p>
+					<p>{{ calculateEgresos(fila.metodosPago, fila.monto) }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-    props: {
-        width: {
-            type: String,
-            default: "90%"
-        },
-        height: {
-            type: String,
-            default: "85%"
-        },
-        color: {
-            type: String,
-            default: "#ffffff"
-        },
-        data: {
-            type: Array,
-            required: true
-        }
-    },
-    computed: {
-        style() {
-            return {
-                width: this.width,
-                height: this.height,
-                backgroundColor: this.color
-            };
-        }
-    }
+	props: {
+		width: {
+			type: String,
+			default: "90%",
+		},
+		height: {
+			type: String,
+			default: "85%",
+		},
+		color: {
+			type: String,
+			default: "#ffffff",
+		},
+		data: {
+			type: Array,
+			required: true,
+		},
+	},
+	methods: {
+		calculateIngresos(metodosPago) {
+			return metodosPago.reduce((acc, item) => acc + item.monto, 0);
+		},
+		calculateEgresos(metodosPago, montoTotal) {
+			return (metodosPago.reduce((acc, item) => acc + item.monto, 0) - montoTotal).toFixed(2);
+		},
+	},
+	computed: {
+		style() {
+			return {
+				width: this.width,
+				height: this.height,
+				backgroundColor: this.color,
+			};
+		},
+	},
 };
 </script>
 
@@ -133,7 +141,7 @@ export default {
 }
 
 p {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 </style>
