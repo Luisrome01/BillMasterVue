@@ -43,6 +43,16 @@ export default {
 						{ label: "BANCARIBE", value: "BANCARIBE" },
 					],
 				},
+				{
+					label: "Numero de Punto:",
+					value: "Numero de Punto",
+					placeholder: "Numero de Punto:",
+					options: [
+						{ label: "PUNTO 1", value: "PUNTO 1" },
+						{ label: "PUNTO 2", value: "PUNTO 2" },
+						{ label: "PUNTO 3", value: "PUNTO 3" },
+					],
+				},
 			],
 		};
 	},
@@ -70,16 +80,36 @@ export default {
 				this.$emit("update-metodo-pago", item.value);
 				if (item.value === "EFECTIVO" || item.value === "DIVISAS") {
 					this.$emit("update-banco", "NO APLICA");
+					this.$emit("update-numero-punto", "NO APLICA");
 					this.inputs[1].value = "";
 				} else if (item.value === "TRANSFERENCIA" || item.value === "TARJETA") {
 					this.$emit("update-banco", "");
+					if (item.value === "TARJETA") {
+						this.$emit("update-numero-punto", "");
+					} else {
+						this.$emit("update-numero-punto", "NO APLICA");
+					}
 				}
-			} else {
+			} else if (index === 1) {
 				this.$emit("update-banco", item.value);
+			} else if (index === 2) {
+				this.$emit("update-numero-punto", item.value);
 			}
 		},
 		shouldDisableSelect(index) {
-			return index === 1 && this.inputs[0].value !== "TRANSFERENCIA" && this.inputs[0].value !== "TARJETA";
+			if (index === 1) {
+				return this.inputs[0].value === "EFECTIVO" || this.inputs[0].value === "DIVISAS" || this.inputs[0].value === "Metodo de Pago";
+			}
+			if (index === 2) {
+				return (
+					this.inputs[0].value === "EFECTIVO" ||
+					this.inputs[0].value === "DIVISAS" ||
+					this.inputs[0].value === "TRANSFERENCIA" ||
+					this.inputs[0].value === "Metodo de Pago" ||
+					this.inputs[1].value === "BANCO" ||
+					this.inputs[1].value === "Numero de Punto"
+				);
+			}
 		},
 	},
 };
@@ -90,6 +120,7 @@ export default {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	gap: 10px;
 }
 
 .IDIFSelect {

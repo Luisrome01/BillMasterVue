@@ -3,7 +3,11 @@
 		<h1 class="MetodosHeaderContainer">Agregar métodos de pago</h1>
 		<div class="MetodosInput">
 			<div class="MetodoMetododPago">
-				<InputMetodosPago @update-metodo-pago="handleUpdateMetodoPago" @update-banco="handleUpdateBanco" />
+				<InputMetodosPago
+					@update-metodo-pago="handleUpdateMetodoPago"
+					@update-banco="handleUpdateBanco"
+					@update-numero-punto="handleUpdatePunto"
+				/>
 			</div>
 			<div class="MetodoMonto-BotonAgregar">
 				<div class="MetodoMonto">
@@ -14,25 +18,21 @@
 		</div>
 
 		<div class="MetodosPagoTableContainer">
-			<MetodosTable :width="'100%'" :height="'300px'" :color="'#ffffff'" :data="datosMetodosPago"
-				@eliminarPago="eliminarPago" />
+			<MetodosTable :width="'100%'" :height="'300px'" :color="'#ffffff'" :data="datosMetodosPago" @eliminarPago="eliminarPago" />
 		</div>
 
 		<div class="MetodosCheckoutContainer">
 			<div style="display: flex; flex-direction: column">
 				<p style="position: relative; margin-left: auto; font-size: 18px" class="MetodoTotal">Total:</p>
-				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{
-					montoTotal.toFixed(2) }}</p>
+				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{ montoTotal.toFixed(2) }}</p>
 			</div>
 			<div style="display: flex; flex-direction: column">
-				<p style="color: green; position: relative; margin-left: auto; font-size: 18px">Pagado: $ {{ montoPagado
-					}}</p>
+				<p style="color: green; position: relative; margin-left: auto; font-size: 18px">Pagado: $ {{ montoPagado }}</p>
 				<p style="color: red; position: relative; margin-left: auto; font-size: 18px; font-weight: 'bold'">
 					Faltante: $ {{ (montoTotal - montoPagado).toFixed(2) }}
 				</p>
 			</div>
-			<BtnGeneral text="Checkout" width="140px" color="#ff6060" onHoverColor="#c54444" :img="marketCartSVG"
-				@click="checkout" />
+			<BtnGeneral text="Checkout" width="140px" color="#ff6060" onHoverColor="#c54444" :img="marketCartSVG" @click="checkout" />
 		</div>
 		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
 	</div>
@@ -48,7 +48,7 @@ import marketCartSVG from "../../../assets/marketKart.svg";
 import svgAdd from "../../../assets/svg_add.svg";
 
 import jsPDF from "jspdf";
-import MessageBar from '../../messageBar/MessageBar.vue';
+import MessageBar from "../../messageBar/MessageBar.vue";
 
 export default {
 	components: {
@@ -56,7 +56,7 @@ export default {
 		InputDiferente,
 		BtnGeneral,
 		MetodosTable,
-		MessageBar
+		MessageBar,
 	},
 	props: {
 		montoTotal: Number,
@@ -80,6 +80,9 @@ export default {
 		handleUpdateBanco(valor) {
 			this.banco = valor;
 		},
+		handleUpdatePunto(valor) {
+			this.numeroPunto = valor;
+		},
 		addMetodoPago() {
 			if (this.metodoPago === "") {
 				this.showMessage("Debe seleccionar un metodo de pago");
@@ -93,10 +96,15 @@ export default {
 				this.showMessage("Debe ingresar un monto");
 				return;
 			}
+			if (this.numeroPunto === "" && this.metodoPago === "TARJETA") {
+				this.showMessage("Debe ingresar un número de punto");
+				return;
+			}
 			this.datosMetodosPago.push({
 				metodosPago: this.metodoPago,
 				banco: this.banco,
 				monto: this.monto.inputText,
+				numeroPunto: this.numeroPunto,
 			});
 			this.montoPagado = 0;
 			this.datosMetodosPago.forEach((pago) => {
@@ -222,7 +230,7 @@ export default {
 				doc.text(element.text, element.x, index);
 			});
 			doc.save("factura.pdf");
-		}
+		},
 	},
 	data() {
 		return {
@@ -232,7 +240,8 @@ export default {
 			banco: "",
 			datosMetodosPago: [],
 			messageVisible: false,
-			messageText: ''
+			messageText: "",
+			numeroPunto: "",
 		};
 	},
 	setup() {

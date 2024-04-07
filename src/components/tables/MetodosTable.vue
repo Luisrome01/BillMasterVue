@@ -5,13 +5,15 @@
 				<p>Metodo de Pago</p>
 				<p>Banco</p>
 				<p>Monto</p>
+				<p>Numero de Punto</p>
 				<p></p>
 			</div>
 			<div class="MetodosTableBody">
 				<div v-for="(fila, index) in data" :key="index" class="MetodosTableRow">
 					<p>{{ fila.metodosPago }}</p>
 					<p>{{ fila.banco }}</p>
-					<p style="justify-self: center;">{{ fila.monto }}</p>
+					<p style="justify-self: center">{{ fila.monto }}</p>
+					<p>{{ fila.numeroPunto }}</p>
 					<button @click="eliminarPago(index)" class="MetodosTrashButton">
 						<img src="../../assets/trashbin.svg" alt="Eliminar pago" />
 					</button>
@@ -68,7 +70,7 @@ export default {
 	display: grid;
 	align-items: center;
 	justify-items: center;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(5, 1fr);
 	padding: 15px;
 	padding-right: 25px;
 	background-color: #d6d6d6;
@@ -82,20 +84,18 @@ export default {
 	overflow-y: auto;
 	height: 70%;
 	width: 100%;
- 
 }
 
 .MetodosTableRow {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(5, 1fr);
 	padding-left: 25px;
 	padding-right: 25px;
 	align-items: center;
 	justify-items: left;
 	margin-top: 25px;
-  justify-content: right;
-  margin-left: 45px;
- 
+	justify-content: right;
+	margin-left: 45px;
 }
 
 .MetodosTableHeader p {
