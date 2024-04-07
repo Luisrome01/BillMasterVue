@@ -1,17 +1,12 @@
 <template>
 	<div class="containerMain">
 		<div class="containerCard">
-			<div
-				v-for="(producto, codigo) in rows"
-				:key="codigo"
-				class="card"
-				:class="{ clicked: producto.clickAddToCart }"
-				@mouseover="showAddToCart(producto)"
-				@mouseleave="hideAddToCart(producto)"
-				@click="addToCart(codigo, producto)"
-			>
+			<div v-for="(producto, codigo) in rows" :key="codigo" class="card"
+				:class="{ clicked: producto.clickAddToCart }" @mouseover="showAddToCart(producto)"
+				@mouseleave="hideAddToCart(producto)" @click="addToCart(codigo, producto)">
 				<div class="img-card">
-					<img :src="producto.img" alt="Imagen del producto" class="imgProduct" :class="{ blurred: producto.showAddToCart }" />
+					<img :src="producto.img" alt="Imagen del producto" class="imgProduct"
+						:class="{ blurred: producto.showAddToCart }" />
 					<p class="add-to-cart" v-if="producto.showAddToCart">Agregar al carrito</p>
 				</div>
 				<div class="info-card">
@@ -20,17 +15,29 @@
 				</div>
 			</div>
 		</div>
+		<MessageBar v-if="showMessage" :text="messageText" position="right" severity="success" :showTime="5000" />
 	</div>
 </template>
 
 <script>
+import MessageBar from '../messageBar/MessageBar.vue';
+
 export default {
+	components: {
+		MessageBar
+	},
 	props: {
 		rows: {
 			type: Object,
 			required: true,
 		},
 		cartList: Array,
+	},
+	data() {
+		return {
+			showMessage: false,
+			messageText: ''
+		};
 	},
 	methods: {
 		clickAddToCart(producto) {
@@ -76,6 +83,12 @@ export default {
 						});
 						if (!productExists) this.cartList.push(newProduct);
 						this.$emit("updateList", this.cartList);
+
+						this.showMessage = true;
+						this.messageText = `${newProduct.descripcion} agregado al carrito`;
+						setTimeout(() => {
+							this.showMessage = false;
+						}, 3000);
 					}
 				});
 		},

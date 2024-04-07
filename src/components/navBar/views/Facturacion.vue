@@ -6,53 +6,27 @@
 			<div class="FacturaInput1">
 				<div class="FacturaCedula-nombre">
 					<div class="FacturaCedula">
-						<InputDinamico
-							ref="inputTipoDocumento"
-							:value="documentoCliente"
-							name="Cedula o Pasaporte:"
-							color="#D9D9D9"
-							width="200px"
-							@blur="handleOnBlur"
+						<InputDinamico ref="inputTipoDocumento" :value="documentoCliente" name="Cedula o Pasaporte:"
+							color="#D9D9D9" width="200px" @blur="handleOnBlur"
 							@onTypeChange="(newType) => setIdentificacion(newType)"
-							@onValueChange="(newValue) => setValorIdentificacion(newValue)"
-						/>
+							@onValueChange="(newValue) => setValorIdentificacion(newValue)" />
 					</div>
 
 					<div class="FacturaNombre">
-						<InputDiferente
-							ref="inputNombre"
-							:value="nombreCliente"
-							name="Nombre:"
-							color="#D9D9D9"
-							width="50%"
-							placeholder="ej. Jhon Doe"
-							:disabled="disabledInput"
-						/>
+						<InputDiferente ref="inputNombre" :value="nombreCliente" name="Nombre:" color="#D9D9D9"
+							width="50%" placeholder="ej. Jhon Doe" :disabled="disabledInput" />
 					</div>
 				</div>
 				<div class="FacturaDireccion">
-					<InputDiferente
-						ref="inputDireccion"
-						name="Direccion:"
-						:value="direccionCliente"
-						flexBasis="100%"
-						color="#D9D9D9"
-						width="70%"
+					<InputDiferente ref="inputDireccion" name="Direccion:" :value="direccionCliente" flexBasis="100%"
+						color="#D9D9D9" width="70%"
 						placeholder="ej. Avenida Río Caura Torre Humboldt Prados del Este Piso 20 Oficina 20-06"
-						:disabled="disabledInput"
-					/>
+						:disabled="disabledInput" />
 				</div>
 				<div class="FacturaRif-BotonCrear">
 					<div class="FacturaRif">
-						<InputDiferente
-							ref="inputRif"
-							:value="rifCliente"
-							name="Rif:"
-							color="#D9D9D9"
-							width="80%"
-							placeholder="ej. J123456789"
-							:disabled="disabledInput"
-						/>
+						<InputDiferente ref="inputRif" :value="rifCliente" name="Rif:" color="#D9D9D9" width="80%"
+							placeholder="ej. J123456789" :disabled="disabledInput" />
 					</div>
 					<div class="FacturaBotonCrear">
 						<BtnGeneral :img="svgAdd" text="Crear Cliente" width="165px" @click="createClient" />
@@ -72,7 +46,8 @@
 					</div>
 				</div>
 				<div class="FacturaCantidad">
-					<InputDiferente type="number" name="Cantidad:" color="#D9D9D9" width="80px" placeholder="1" ref="inputCantidad" />
+					<InputDiferente type="number" name="Cantidad:" color="#D9D9D9" width="80px" placeholder="1"
+						ref="inputCantidad" />
 				</div>
 				<div class="FacturaBotonAgregar">
 					<BtnGeneral :img="svgAdd" text="Agregar Producto" width="200px" @click="addProduct" />
@@ -87,10 +62,12 @@
 		<div class="FacturaCheckoutContainer">
 			<div style="display: flex; flex-direction: column">
 				<p style="position: relative; margin-left: auto; font-size: 18px">Total:</p>
-				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{ montoTotal }}</p>
+				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{
+							montoTotal }}</p>
 			</div>
 			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" />
 		</div>
+		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
 	</div>
 </template>
 
@@ -103,6 +80,7 @@ import { ref } from "vue";
 import svgAdd from "../../../assets/svg_add.svg";
 import svgSearch from "../../../assets/SearchSVG.svg";
 import cartSVG from "../../../assets/marketKart.svg";
+import MessageBar from '../../messageBar/MessageBar.vue';
 
 export default {
 	name: "Facturacion",
@@ -111,12 +89,19 @@ export default {
 		InputDiferente,
 		BtnGeneral,
 		ProductTable,
+		MessageBar,
 	},
 	props: {
 		/* working */
 		productList: Array,
 		cliente: Object,
 		/* testing */
+	},
+	data() {
+		return {
+			messageVisible: false,
+			messageText: ''
+		}
 	},
 	mounted() {
 		this.cantidad = this.$refs.inputCantidad;
@@ -126,8 +111,14 @@ export default {
 		this.inputDocumento = this.$refs.inputTipoDocumento;
 		this.rif = this.$refs.inputRif;
 	},
-
 	methods: {
+		showMessage(text) {
+			this.messageText = text;
+			this.messageVisible = true;
+			setTimeout(() => {
+				this.messageVisible = false;
+			}, 5000);
+		},
 		addProduct() {
 			fetch("/src/json/productos.json")
 				.then((response) => {
@@ -181,7 +172,7 @@ export default {
 
 		continueToPayment() {
 			if (this.listProductos.length <= 0) {
-				alert("No hay productos en la factura");
+				this.showMessage("No hay productos en la factura");
 				return;
 			}
 			if (
@@ -190,7 +181,7 @@ export default {
 				this.rif.inputText === "" ||
 				this.inputDocumento.valorDocumento === ""
 			) {
-				alert("Datos del cliente incompletos");
+				this.showMessage("Datos del cliente incompletos");
 				return;
 			}
 			this.$emit("metodo-pago");

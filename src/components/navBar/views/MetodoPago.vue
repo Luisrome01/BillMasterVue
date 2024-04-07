@@ -1,9 +1,9 @@
 <template>
 	<div class="MetodosContainer">
-		<h1 class="MetodosHeaderContainer">Agregar metodos de pago</h1>
+		<h1 class="MetodosHeaderContainer">Agregar métodos de pago</h1>
 		<div class="MetodosInput">
 			<div class="MetodoMetododPago">
-				<inputMetodosPago @update-metodo-pago="handleUpdateMetodoPago" @update-banco="handleUpdateBanco" />
+				<InputMetodosPago @update-metodo-pago="handleUpdateMetodoPago" @update-banco="handleUpdateBanco" />
 			</div>
 			<div class="MetodoMonto-BotonAgregar">
 				<div class="MetodoMonto">
@@ -14,24 +14,30 @@
 		</div>
 
 		<div class="MetodosPagoTableContainer">
-			<MetodosTable :width="'100%'" :height="'300px'" :color="'#ffffff'" :data="datosMetodosPago" @eliminarPago="eliminarPago" />
+			<MetodosTable :width="'100%'" :height="'300px'" :color="'#ffffff'" :data="datosMetodosPago"
+				@eliminarPago="eliminarPago" />
 		</div>
 
 		<div class="MetodosCheckoutContainer">
 			<div style="display: flex; flex-direction: column">
 				<p style="position: relative; margin-left: auto; font-size: 18px" class="MetodoTotal">Total:</p>
-				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{ montoTotal.toFixed(2) }}</p>
+				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{
+					montoTotal.toFixed(2) }}</p>
 			</div>
 			<div style="display: flex; flex-direction: column">
-				<p style="color: green; position: relative; margin-left: auto; font-size: 18px">Pagado: $ {{ montoPagado }}</p>
+				<p style="color: green; position: relative; margin-left: auto; font-size: 18px">Pagado: $ {{ montoPagado
+					}}</p>
 				<p style="color: red; position: relative; margin-left: auto; font-size: 18px; font-weight: 'bold'">
 					Faltante: $ {{ (montoTotal - montoPagado).toFixed(2) }}
 				</p>
 			</div>
-			<BtnGeneral text="Checkout" width="140px" color="#ff6060" onHoverColor="#c54444" :img="marketCartSVG" @click="checkout" />
+			<BtnGeneral text="Checkout" width="140px" color="#ff6060" onHoverColor="#c54444" :img="marketCartSVG"
+				@click="checkout" />
 		</div>
+		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
 	</div>
 </template>
+
 <script>
 import InputDiferente from "../../inputs/InputDiferente.vue";
 import InputMetodosPago from "../../inputs/InputMetodosPago.vue";
@@ -42,6 +48,7 @@ import marketCartSVG from "../../../assets/marketKart.svg";
 import svgAdd from "../../../assets/svg_add.svg";
 
 import jsPDF from "jspdf";
+import MessageBar from '../../messageBar/MessageBar.vue';
 
 export default {
 	components: {
@@ -49,6 +56,7 @@ export default {
 		InputDiferente,
 		BtnGeneral,
 		MetodosTable,
+		MessageBar
 	},
 	props: {
 		montoTotal: Number,
@@ -59,6 +67,13 @@ export default {
 		this.monto = this.$refs.monto;
 	},
 	methods: {
+		showMessage(text) {
+			this.messageText = text;
+			this.messageVisible = true;
+			setTimeout(() => {
+				this.messageVisible = false;
+			}, 5000);
+		},
 		handleUpdateMetodoPago(valor) {
 			this.metodoPago = valor;
 		},
@@ -67,15 +82,15 @@ export default {
 		},
 		addMetodoPago() {
 			if (this.metodoPago === "") {
-				alert("Debe seleccionar un metodo de pago");
+				this.showMessage("Debe seleccionar un metodo de pago");
 				return;
 			}
 			if (this.banco === "") {
-				alert("Debe seleccionar un banco");
+				this.showMessage("Debe seleccionar un banco");
 				return;
 			}
 			if (this.monto.inputText === "") {
-				alert("Debe ingresar un monto");
+				this.showMessage("Debe ingresar un monto");
 				return;
 			}
 			this.datosMetodosPago.push({
@@ -94,7 +109,7 @@ export default {
 		},
 		checkout() {
 			if (this.montoPagado < this.montoTotal) {
-				alert("El monto pagado es menor al monto total");
+				this.showMessage("El monto pagado es menor al monto total");
 				return;
 			}
 			console.log(this.cliente);
@@ -110,15 +125,15 @@ export default {
 				this.cliente.tipoDocumentoCliente === "" ||
 				this.cliente.tipoDocumentoCliente === undefined
 			) {
-				alert("Datos del cliente incompletos");
+				this.showMessage("Datos del cliente incompletos");
 				return;
 			}
 			if (this.productList.length === 0) {
-				alert("No hay productos en la lista");
+				this.showMessage("No hay productos en la lista");
 				return;
 			}
 
-			alert("Compra realizada con exito");
+			this.showMessage("Compra realizada con éxito");
 
 			this.generarPDF({
 				codigoFactura: "123456",
@@ -207,7 +222,7 @@ export default {
 				doc.text(element.text, element.x, index);
 			});
 			doc.save("factura.pdf");
-		},
+		}
 	},
 	data() {
 		return {
@@ -216,6 +231,8 @@ export default {
 			metodoPago: "",
 			banco: "",
 			datosMetodosPago: [],
+			messageVisible: false,
+			messageText: ''
 		};
 	},
 	setup() {
