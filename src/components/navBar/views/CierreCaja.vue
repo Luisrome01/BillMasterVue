@@ -21,6 +21,7 @@
 
 		<ModalCierre
 			v-if="openModal"
+			:closeModal="closeModal"
 			:cantidadFacturas="cantidadFacturas"
 			:ingresos="listIngresos"
 			:ingresosEfectivo="ingresosEfectivo"
@@ -161,7 +162,14 @@ export default {
 			openModal.value = true;
 		};
 
+		const closeModal = () => {
+			const currentDateTime = new Date();
+			localStorage.setItem("cajaBloqueada", "true");
+			localStorage.setItem("blockedDate", currentDateTime.toLocaleDateString("es-AR"));
+		};
+
 		return {
+			closeModal,
 			montoTotal,
 			listIngresos,
 			ingresosEfectivo,
