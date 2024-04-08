@@ -62,5 +62,6 @@ input {
     border: none;
     outline: none;
     color: black;
+    padding-left: 10px;
 }
 </style>
