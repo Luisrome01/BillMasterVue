@@ -9,7 +9,10 @@
 						<InputDinamico ref="inputTipoDocumento" :value="documentoCliente" name="Cedula o Pasaporte:"
 							color="#D9D9D9" width="200px" @blur="handleOnBlur"
 							@onTypeChange="(newType) => setIdentificacion(newType)"
-							@onValueChange="(newValue) => setValorIdentificacion(newValue)" />
+							@onValueChange="(newValue) => setValorIdentificacion(newValue)" 
+						
+							
+							/>
 					</div>
 
 					<div class="FacturaNombre">
@@ -37,7 +40,7 @@
 			<div class="FacturaInput2">
 				<div class="FacturaoCodigo-buscar">
 					<div class="FacturaCodigo">
-						<InputDiferente name="Codigo:" color="#D9D9D9" ref="inputCodigo" />
+						<InputDiferente name="Codigo:" color="#D9D9D9" ref="inputCodigo"  v-model="codigo.inputText" @keydown.enter="handleEnter"/>
 					</div>
 					<div class="FacturaBuscar">
 						<button class="FacturaSearch" @click="handleClickModal">
@@ -47,7 +50,7 @@
 				</div>
 				<div class="FacturaCantidad">
 					<InputDiferente type="number" name="Cantidad:" color="#D9D9D9" width="80px" placeholder="1"
-						ref="inputCantidad" />
+						ref="inputCantidad" v-model="codigo.inputText" @keydown.enter="handleEnter"/>
 				</div>
 				<div class="FacturaBotonAgregar">
 					<BtnGeneral :img="svgAdd" text="Agregar Producto" width="200px" @click="addProduct" />
@@ -93,6 +96,7 @@ export default {
 		ProductTable,
 		MessageBar,
 		ModalBuscar,
+		
 	},
 	props: {
 		productList: Array,
@@ -136,7 +140,9 @@ export default {
 					return response.json();
 				})
 				.then((data) => {
-					let product = data[this.codigo.inputText];
+					
+					let product = data[this.codigo ? this.codigo.inputText : null];
+
 					if (product) {
 						if (this.cantidad.inputText === "" || this.cantidad.inputText === "0") {
 							this.cantidad.inputText = "1";
@@ -257,6 +263,11 @@ export default {
 				});
 			} catch (error) {
 				console.error("Error al cargar los clientes:", error);
+			}
+		},
+		handleEnter(event) {
+			if (event.key === "Enter") {
+				this.addProduct();
 			}
 		},
 	},
