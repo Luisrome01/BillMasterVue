@@ -40,7 +40,7 @@
 						<InputDiferente name="Codigo:" color="#D9D9D9" ref="inputCodigo" />
 					</div>
 					<div class="FacturaBuscar">
-						<button class="FacturaSearch">
+						<button class="FacturaSearch" @click="handleClickModal">
 							<img :src="svgSearch" alt="Buscar" />
 						</button>
 					</div>
@@ -67,6 +67,7 @@
 			</div>
 			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" />
 		</div>
+		<ModalBuscar v-if="openModal" :closeModal="handleCloseModal" :agregarProducto="agregarProducto" />
 		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
 	</div>
 </template>
@@ -81,6 +82,7 @@ import svgAdd from "../../../assets/svg_add.svg";
 import svgSearch from "../../../assets/SearchSVG.svg";
 import cartSVG from "../../../assets/marketKart.svg";
 import MessageBar from '../../messageBar/MessageBar.vue';
+import ModalBuscar from "../../modals/ModalBuscar.vue";
 
 export default {
 	name: "Facturacion",
@@ -90,17 +92,17 @@ export default {
 		BtnGeneral,
 		ProductTable,
 		MessageBar,
+		ModalBuscar,
 	},
 	props: {
-		/* working */
 		productList: Array,
 		cliente: Object,
-		/* testing */
 	},
 	data() {
 		return {
 			messageVisible: false,
-			messageText: ''
+			messageText: '',
+			openModal: false,
 		}
 	},
 	mounted() {
@@ -112,6 +114,12 @@ export default {
 		this.rif = this.$refs.inputRif;
 	},
 	methods: {
+		handleClickModal() {
+			this.openModal = true;
+		},
+		handleCloseModal() {
+			this.openModal = false;
+		},
 		showMessage(text) {
 			this.messageText = text;
 			this.messageVisible = true;
@@ -158,6 +166,15 @@ export default {
 						this.$emit("updateList", this.listProductos);
 					}
 				});
+		},
+		agregarProducto(producto) {
+			const existingProductIndex = this.listProductos.findIndex(p => p.codigo === producto.codigo);
+			if (existingProductIndex !== -1) {
+				this.listProductos[existingProductIndex].cantidad += producto.cantidad;
+				this.listProductos[existingProductIndex].total += producto.total;
+			} else {
+				this.listProductos.push(producto);
+			}
 		},
 
 		createClient() {
