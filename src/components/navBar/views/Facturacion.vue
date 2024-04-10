@@ -40,7 +40,7 @@
 			<div class="FacturaInput2">
 				<div class="FacturaoCodigo-buscar">
 					<div class="FacturaCodigo">
-						<InputDiferente name="Codigo:" color="#D9D9D9" ref="inputCodigo"  v-model="codigo.inputText" @keydown.enter="handleEnter"/>
+						<InputDiferente name="Codigo:" color="#D9D9D9" ref="inputCodigo"   @keydown.enter="handleEnter"/>
 					</div>
 					<div class="FacturaBuscar">
 						<button class="FacturaSearch" @click="handleClickModal">
@@ -50,7 +50,7 @@
 				</div>
 				<div class="FacturaCantidad">
 					<InputDiferente type="number" name="Cantidad:" color="#D9D9D9" width="80px" placeholder="1"
-						ref="inputCantidad" v-model="codigo.inputText" @keydown.enter="handleEnter"/>
+						ref="inputCantidad"  @keydown.enter="handleEnter"/>
 				</div>
 				<div class="FacturaBotonAgregar">
 					<BtnGeneral :img="svgAdd" text="Agregar Producto" width="200px" @click="addProduct" />
@@ -172,7 +172,7 @@ export default {
 						this.$emit("updateList", this.listProductos);
 					}
 				});
-		},
+		},	
 		agregarProducto(producto) {
 			const existingProductIndex = this.listProductos.findIndex(p => p.codigo === producto.codigo);
 			if (existingProductIndex !== -1) {
