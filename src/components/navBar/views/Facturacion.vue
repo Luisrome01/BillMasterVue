@@ -32,8 +32,13 @@
 							placeholder="ej. J123456789" :disabled="disabledInput" />
 					</div>
 					<div class="FacturaBotonCrear">
-						<BtnGeneral :img="svgAdd" text="Crear Cliente" width="165px" @click="createClient" />
-					</div>
+    <BtnGeneral 
+      :img="svgAdd" 
+      text="Crear Cliente" 
+      width="165px" 
+      @click="createClient" 
+	  :disabled="ClientCreated"    />
+  </div>
 				</div>
 			</div>
 
@@ -68,7 +73,7 @@
 				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{
 							montoTotal }}</p>
 			</div>
-			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" />
+			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" :disabled="!ClientCreated || !haveItems"/>
 		</div>
 		<ModalBuscar v-if="openModal" :closeModal="handleCloseModal" :agregarProducto="agregarProducto" />
 		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
@@ -80,12 +85,13 @@ import InputDinamico from "../../../components/inputs/InputDinamico.vue";
 import InputDiferente from "../../../components/inputs/InputDiferente.vue";
 import BtnGeneral from "../../../components/buttons/BtnGeneral.vue";
 import ProductTable from "../../tables/ProductTable.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import svgAdd from "../../../assets/svg_add.svg";
 import svgSearch from "../../../assets/SearchSVG.svg";
 import cartSVG from "../../../assets/marketKart.svg";
 import MessageBar from '../../messageBar/MessageBar.vue';
 import ModalBuscar from "../../modals/ModalBuscar.vue";
+
 
 export default {
 	name: "Facturacion",
@@ -191,6 +197,10 @@ export default {
 				documentoCliente: this.inputDocumento.valorDocumento,
 				tipoDocumentoCliente: this.inputDocumento.tipoDocumento,
 			});
+			this.ClientCreated = true;
+    console.log("ClientCreated now:", this.ClientCreated);
+	console.log("Have items:", this.haveItems);
+			
 		},
 
 		continueToPayment() {
@@ -282,6 +292,9 @@ export default {
 		const tipoDocumentoCliente = ref(props.cliente.tipoDocumentoCliente || "");
 		const documentoCliente = ref(props.cliente.documentoCliente || "");
 
+		const ClientCreated = ref(false);
+		const haveItems = computed(() => listProductos.value.length > 0);
+
 		return {
 			listProductos,
 			montoTotal,
@@ -294,6 +307,8 @@ export default {
 			svgSearch,
 			tipoDocumentoCliente,
 			documentoCliente,
+			ClientCreated,
+			haveItems
 		};
 	},
 };

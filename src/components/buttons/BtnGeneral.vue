@@ -7,6 +7,7 @@
 		@mousedown="handlePress"
 		@mouseup="handleRelease"
 		class="BtnGeneral"
+		:disabled="disabled"
 	>
 		<img :src="img" />
 		{{ text }}
@@ -46,6 +47,7 @@ export default {
 			type: String,
 			default: "10px",
 		},
+		disabled: Boolean, // Add disabled prop
 	},
 	setup(props) {
 		const isHovered = ref(false);
@@ -74,12 +76,12 @@ export default {
 			width: props.width,
 			height: props.height,
 			gap: props.gap,
-			backgroundColor: isHovered.value ? props.onHoverColor || "#8E9BFF" : props.color,
+			backgroundColor: props.disabled ? '#D9D9D9' : (isHovered.value ? props.onHoverColor || "#8E9BFF" : props.color),
 			borderRadius: props.borderRadius,
 			boxShadow: isPressed.value ? "0px 2px 2px rgba(0, 0, 0, 0.75)" : props.shadow,
 			transition: "background-color 0.3s, transform 0.1s, box-shadow 0.1s",
 			transform: isPressed.value ? "scale(0.95)" : "scale(1)",
-			cursor: isHovered.value ? "pointer" : "default",
+			cursor: props.disabled ? "not-allowed" : (isHovered.value ? "pointer" : "default"),
 		}));
 
 		return {
