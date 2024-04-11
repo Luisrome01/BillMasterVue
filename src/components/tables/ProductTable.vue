@@ -22,9 +22,7 @@
 					<p>$ {{ row.precio }}</p>
 					<p>$ {{ row.iva }}</p>
 					<p>$ {{ row.total.toFixed(2) }}</p>
-					<button style="border: none; background-color: transparent; padding-right: 15px">
-						<img src="../../assets/explore.svg" alt="Explorar" />
-					</button>
+					<p></p>
 				</div>
 			</div>
 		</div>

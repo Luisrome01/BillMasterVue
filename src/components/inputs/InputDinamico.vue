@@ -14,6 +14,11 @@
 				class="IDIFInput"
 				placeholder="Ingrese el número de documento"
 				@blur="handleBlur"
+				@keydown="
+					(event) => {
+						if (event.key === 'Enter') onEnter(valorDocumento, tipoDocumento);
+					}
+				"
 			/>
 		</div>
 	</div>
@@ -27,6 +32,7 @@ export default {
 		height: String,
 		color: String,
 		value: String,
+		onEnter: Function,
 		onBlur: Function,
 	},
 	data() {
