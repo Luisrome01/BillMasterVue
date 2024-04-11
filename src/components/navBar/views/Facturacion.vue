@@ -73,7 +73,7 @@
 				<p style="position: relative; margin-left: auto; font-size: 25.4331px; font-weight: bold">$ {{
 							montoTotal }}</p>
 			</div>
-			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" :disabled="!ClientCreated || !haveItems"/>
+			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" :disabled="!ClientReady || !haveItems"/>
 		</div>
 		<ModalBuscar v-if="openModal" :closeModal="handleCloseModal" :agregarProducto="agregarProducto" />
 		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
@@ -198,6 +198,7 @@ export default {
 				tipoDocumentoCliente: this.inputDocumento.tipoDocumento,
 			});
 			this.ClientCreated = true;
+			this.ClientReady = true;
     console.log("ClientCreated now:", this.ClientCreated);
 	console.log("Have items:", this.haveItems);
 			
@@ -255,6 +256,7 @@ export default {
 					this.rifCliente = clienteEncontrado.rif;
 					this.tipoDocumentoCliente = tipoDocumento;
 					this.documentoCliente = valorDocumento;
+					this.ClientReady = true;
 				} else {
 					this.disabledInput = false;
 					this.nombreCliente = "";
@@ -262,6 +264,7 @@ export default {
 					this.rifCliente = "";
 					this.tipoDocumentoCliente = tipoDocumento;
 					this.documentoCliente = valorDocumento;
+					this.ClientCreated = false;
 				}
 
 				this.$emit("clienteEncontrado", {
@@ -292,7 +295,8 @@ export default {
 		const tipoDocumentoCliente = ref(props.cliente.tipoDocumentoCliente || "");
 		const documentoCliente = ref(props.cliente.documentoCliente || "");
 
-		const ClientCreated = ref(false);
+		const ClientCreated = ref(true);
+		const ClientReady = ref(false);
 		const haveItems = computed(() => listProductos.value.length > 0);
 
 		return {
@@ -308,6 +312,7 @@ export default {
 			tipoDocumentoCliente,
 			documentoCliente,
 			ClientCreated,
+			ClientReady,
 			haveItems
 		};
 	},
