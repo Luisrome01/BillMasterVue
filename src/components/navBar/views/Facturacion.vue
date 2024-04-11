@@ -52,6 +52,8 @@
 							<img :src="svgSearch" alt="Buscar" />
 						</button>
 					</div>
+					<ModalBuscar v-if="openModal" :closeModal="handleCloseModal" :agregarProducto="agregarProducto" class="FactModal" />
+					
 				</div>
 				<div class="FacturaCantidad">
 					<InputDiferente type="number" name="Cantidad:" color="#D9D9D9" width="80px" placeholder="1"
@@ -75,7 +77,6 @@
 			</div>
 			<BtnGeneral text="Metodo de Pago" width="150px" color="#ff6060" :img="cartSVG" @click="continueToPayment" :disabled="!ClientReady || !haveItems"/>
 		</div>
-		<ModalBuscar v-if="openModal" :closeModal="handleCloseModal" :agregarProducto="agregarProducto" />
 		<MessageBar v-if="messageVisible" :text="messageText" position="left" severity="warning" :showTime="5000" />
 	</div>
 </template>
@@ -320,6 +321,10 @@ export default {
 </script>
 
 <style scoped>
+.FactModal {
+	z-index: 100;
+}
+
 .FacturaContainer {
 	display: flex;
 	flex-direction: column;
